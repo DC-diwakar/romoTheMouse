@@ -21,7 +21,9 @@ var jerryend;
 var jerryhome;
 var move_interval=50;
 var level=1;
-
+var sanitizeMusic;
+var winningMusic;
+var endMusic;
 function getRndInteger(min, max) {
   return Math.floor(Math.random() * (max - min + 1) ) + min;
 }
@@ -67,7 +69,7 @@ function moveObject(){
 		//else nodes[i].x=nodes[i].x+5;
 		if(Math.abs(playerx-nodes[i].x)<=45 && Math.abs(playery-nodes[i].y)<=45){
 			playerAttacked();					
-		}else if(sanitizers.length<=3 && Math.abs(playerx-circularVirusA.radiiX)<=50 && Math.abs(playery-circularVirusA.radiiY)<=50){
+		}else if(sanitizers.length<=1 && Math.abs(playerx-circularVirusA.radiiX)<=50 && Math.abs(playery-circularVirusA.radiiY)<=50){
 			playerWon();
 		}
 		else{
@@ -140,14 +142,12 @@ function sanitizer(x,y)
 
 
 function testEnemy(){
-	// game_canva.context.beginPath();
+	 
 	// game_canva.context.fillStyle = "gray";
 	//game_canva.context.arc(x,y,25,0, 2*Math.PI);
 	game_canva.context.drawImage(img,circularVirusA.x,circularVirusA.y,60,60);
 	game_canva.context.drawImage(jerryhome,circularVirusA.radiiX,circularVirusA.radiiY,100,100);
 
-	// game_canva.context.fill();
-	// game_canva.context.stroke();
 }
 function create_player(){
 		m=window.innerWidth/2;
@@ -276,6 +276,7 @@ function restartGame(level){
 	startGame();
 }
 function playerAttacked(){
+			endMusic.play();
 			clear_canvas(playerx,playery);
 			isDragging=false;
 			window.clearInterval(gameTimer);
@@ -285,6 +286,7 @@ function playerAttacked(){
 			}, 100);
 }
 function playerWon(){
+	winningMusic.play();
 	clear_canvas(playerx,playery);
 			isDragging=false;
 			window.clearInterval(gameTimer);
@@ -296,11 +298,27 @@ function track_sanitizers(){
 	for(let i=0;i<sanitizers.length;i++){
 	if(Math.abs(playerx-sanitizers[i].x)<=50 && Math.abs(playery-sanitizers[i].y)<=50){
 		sanitizers[i].clear_sanitizer();
+		//sanitizeMusic.stop();
+		sanitizeMusic.play();
 		sanitizers.splice(i,1);
 	}else{
 	sanitizers[i].create_sanitizer();
 	}
 }
+}
+function sound(src) {
+  this.sound = document.createElement("audio");
+  this.sound.src = src;
+  this.sound.setAttribute("preload", "auto");
+  this.sound.setAttribute("controls", "none");
+  this.sound.style.display = "none";
+  document.body.appendChild(this.sound);
+  this.play = function(){
+    this.sound.play();
+  }
+  this.stop = function(){
+    this.sound.pause();
+  }
 }
 window.onload=function() {
 	game_canva=initialiseGameZone();
@@ -315,6 +333,9 @@ window.onload=function() {
 	jerryend.src='jerry2.png';
 	jerryhome=new Image();
 	jerryhome.src='jerryhome.png';
+	sanitizeMusic = new sound("smb3_coin.wav");
+	winningMusic=new sound("smb_1-up.wav");
+	endMusic=new sound('endmusic.wav');
 
 	boyimg.onload=function(){
 		create_player();
