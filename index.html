@@ -24,5 +24,160 @@
   </style>
 <body class="generaldiv">
 <canvas id="gameCanvas"  style=""></canvas>
+<div class="modal fade " id="myModal" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h3 class="modal-title">Save romo!</h3>
+          <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div>
+          <h4>  
+          <ul><li>Romo is away from home collecting sanitizers</li><li>Your task is to get him home safely</li>
+          <li>movement is based on touch and drag.</li>
+          </ul>
+        </h4>
+        </div>
+        <div class="" style="text-align: center;">
+          <button type="button" class="btn btn-success btn-lg" onclick="startGame(0)" data-dismiss="modal"><h3>Start Game</h3></button>
+        </div>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <div class="text-center row col-md-8">
+            <h5>Developer profiles</h5>
+          </div> 
+          <div class="row col-md-12">
+           
+          <div class="col-md-3 col-sm-3">  
+          <a href="https://github.com/DC-diwakar" target="_blank"><img src="githubicon.png" style="width: 60px;height: 60px"></a>
+          </div>
+          <div class="col-md-3 col-sm-3">  
+          <a href="https://www.linkedin.com/in/diwakar-choudhary-b70b55124/" target="_blank"><img src="linkedinicon.png" style="width: 60px;height: 60px"></a>
+          </div>
+          <div class="col-md-3 col-sm-3">  
+          <a href="https://www.facebook.com/diwakar.choudhary3" target="_blank"><img src="fbicon.png" style="width: 60px;height: 60px"></a>
+          </div>
+          <div class="col-md-3 col-sm-3">  
+          <a href="https://www.instagram.com/_diwakarchoudhary/?hl=en" target="_blank"><img src="insta_icon.png" style="width: 60px;height: 60px"></a>
+          </div>  
+        </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade " id="gameOverModal" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h2 class="modal-title">Sorry ! it's over for him</h2>
+          <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div>
+          <h4>  
+          <ul><li>Romo is away from home collecting sanitizers</li><li>Your task is to get him home safely</li>
+          <li>movement is based on touch and drag.</li>
+          </ul>
+        </h4>
+        </div>
+        <div class="" style="text-align: center;">
+            <button type="button" class="btn btn-danger btn-lg" onclick="restartGame(0)" data-dismiss="modal">Restart Game</button>
+        </div>
+
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+           <div class="text-center row col-md-8">
+            <h5>Developer profiles</h5>
+          </div> 
+          <div class="row col-md-12">
+           
+          <div class="col-md-3 col-sm-3">  
+          <a href="https://github.com/DC-diwakar" target="_blank"><img src="githubicon.png" style="width: 60px;height: 60px"></a>
+          </div>
+          <div class="col-md-3 col-sm-3">  
+          <a href="https://www.linkedin.com/in/diwakar-choudhary-b70b55124/" target="_blank"><img src="linkedinicon.png" style="width: 60px;height: 60px"></a>
+          </div>
+          <div class="col-md-3 col-sm-3">  
+          <a href="https://www.facebook.com/diwakar.choudhary3" target="_blank"><img src="fbicon.png" style="width: 60px;height: 60px"></a>
+          </div>
+          <div class="col-md-3 col-sm-3">  
+          <a href="https://www.instagram.com/_diwakarchoudhary/?hl=en" target="_blank"><img src="insta_icon.png" style="width: 60px;height: 60px"></a>
+          </div>  
+        </div>
+        
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+   <div class="modal fade " id="gameWonModal" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h2 class="modal-title" style="color:purple">Hurray ! Thanks for helping him reach safely.</h2>
+          <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div>
+          <h4>  
+          <ul><li>Thank you for trying out the 1st version</li>
+            <li>We'll come up with new features,better control and interesting game context asap.</li>
+            <li>you can visit any of the below profiles for your feedbacks and suggestions</li>
+          </ul>
+        </h4>
+        </div>
+        <div class="" style="text-align: center;">
+          <button type="button" class="btn btn-info btn-lg" onclick="restartGame(1)" data-dismiss="modal">Play level 1</button>
+            <button type="button" class="btn btn-info btn-lg" onclick="restartGame(2)" data-dismiss="modal">Play level 2</button>
+        </div>
+
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+           <div class="text-center row col-md-8">
+            <h5>Developer profiles</h5>
+          </div> 
+          <div class="row col-md-12">
+           
+          <div class="col-md-3 col-sm-3">  
+          <a href="https://github.com/DC-diwakar" target="_blank"><img src="githubicon.png" style="width: 60px;height: 60px"></a>
+          </div>
+          <div class="col-md-3 col-sm-3">  
+          <a href="https://www.linkedin.com/in/diwakar-choudhary-b70b55124/" target="_blank"><img src="linkedinicon.png" style="width: 60px;height: 60px"></a>
+          </div>
+          <div class="col-md-3 col-sm-3">  
+          <a href="https://www.facebook.com/diwakar.choudhary3" target="_blank"><img src="fbicon.png" style="width: 60px;height: 60px"></a>
+          </div>
+          <div class="col-md-3 col-sm-3">  
+          <a href="https://www.instagram.com/_diwakarchoudhary/?hl=en" target="_blank"><img src="insta_icon.png" style="width: 60px;height: 60px"></a>
+          </div>  
+        </div>
+        
+        </div>
+        
+      </div>
+    </div>
+  </div>
 </body>
 </html>

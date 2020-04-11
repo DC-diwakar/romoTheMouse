@@ -1,5 +1,4 @@
 
-
 var x=50;
 var y=50;
 var m;
@@ -10,29 +9,36 @@ var playerx;
 var playery;
 var virusBossA;
 var virusBossB;
+var game_canva;
+var img;
+var gameTimer;
+var isDragging=false;
+var oldm;
+var oldn;
+var redHome;
+var circularVirusA;
+var jerryend;
+var jerryhome;
+var move_interval=50;
+var level=1;
+
 function getRndInteger(min, max) {
   return Math.floor(Math.random() * (max - min + 1) ) + min;
 }
+
 function clear_canvas(xx,yy)
 {
 game_canva.context.beginPath();
 game_canva.context.rect(xx,yy,100,100);
 game_canva.context.fillStyle = "black";
-//game_canva.context.fillStyle = "#8A2BE2";
 game_canva.context.fill();
-for(let i=0;i<sanitizers.length;i++){
-	if(Math.abs(playerx-sanitizers[i].x)<=50 && Math.abs(playery-sanitizers[i].y)<=50){
-		sanitizers[i].clear_sanitizer();
-		sanitizers.splice(i,1);
-	}else{
-	sanitizers[i].create_sanitizer();
-	}
-}
+track_sanitizers();
 }
 function moveObject(){
+	console.log("move object");
 	//y=y+5;
 	for(let i=0;i<nodes.length;i++){
-		clear_canvas(nodes[i].x,nodes[i].y);
+		nodes[i].clear_virus();
 		if(nodes[i].y>window.innerHeight){
 	  nodes[i].y=nodes[i].y-window.innerHeight;
 	}else if(nodes[i].y<0){
@@ -47,16 +53,37 @@ function moveObject(){
 
 
 		//clear_canvas(nodes[i].x,nodes[i].y);
-		if(i%4==0) {
+		if(i%4==0){
 			nodes[i].y=nodes[i].y-10;
 			nodes[i].x=nodes[i].x-10;
+		}else if(i%5==0){
+			nodes[i].x=nodes[i].x-5;
+			nodes[i].y=nodes[i].y+5;
 		}else{
 			nodes[i].y=nodes[i].y+(Math.floor(Math.random()*3)+1)*5;
 			nodes[i].x=nodes[i].x+(Math.floor(Math.random()*3)-1)*5;
 		}
+
 		//else nodes[i].x=nodes[i].x+5;
-		nodes[i].create_virus();
+		if(Math.abs(playerx-nodes[i].x)<=45 && Math.abs(playery-nodes[i].y)<=45){
+			playerAttacked();					
+		}else if(sanitizers.length<=3 && Math.abs(playerx-circularVirusA.radiiX)<=50 && Math.abs(playery-circularVirusA.radiiY)<=50){
+			playerWon();
+		}
+		else{
+			nodes[i].create_virus();
+		}
 	}
+
+	if(Math.abs(playerx-circularVirusA.x)<=45 && Math.abs(playery-circularVirusA.y)<=45){
+			playerAttacked();
+	}
+	clear_canvas(circularVirusA.x,circularVirusA.y);
+	circularVirusA.angle=circularVirusA.angle+Math.PI/36;
+	if(circularVirusA.angle>2*Math.PI) circularVirusA.angle=0;
+	circularVirusA.x=circularVirusA.radiiX-150*Math.cos(circularVirusA.angle);
+	circularVirusA.y=circularVirusA.radiiY+150*Math.sin(circularVirusA.angle);
+	testEnemy();
 
 }
 
@@ -71,10 +98,18 @@ function virus(x,y)
 	// game_canva.context.beginPath();
 	// game_canva.context.fillStyle = "gray";
 	//game_canva.context.arc(x,y,25,0, 2*Math.PI);
-	game_canva.context.drawImage(img,me.x,me.y,100,100);
+	game_canva.context.drawImage(img,me.x,me.y,80,80);
 	// game_canva.context.fill();
 	// game_canva.context.stroke();
 	}
+	this.clear_virus=function(){
+		game_canva.context.beginPath();
+		game_canva.context.rect(me.x,me.y,80,80);
+		game_canva.context.fillStyle = "black";
+		//game_canva.context.fillStyle = "#8A2BE2";
+		game_canva.context.fill();
+	}
+
 }
 function sanitizer(x,y)
 {
@@ -108,7 +143,9 @@ function testEnemy(){
 	// game_canva.context.beginPath();
 	// game_canva.context.fillStyle = "gray";
 	//game_canva.context.arc(x,y,25,0, 2*Math.PI);
-	game_canva.context.drawImage(img,x,y,80,80);
+	game_canva.context.drawImage(img,circularVirusA.x,circularVirusA.y,60,60);
+	game_canva.context.drawImage(jerryhome,circularVirusA.radiiX,circularVirusA.radiiY,100,100);
+
 	// game_canva.context.fill();
 	// game_canva.context.stroke();
 }
@@ -119,16 +156,22 @@ function create_player(){
 		playery=n;
 		game_canva.context.drawImage(boyimg,window.innerWidth/2,window.innerHeight-120,100,100);
 		
-		for(let i=0;i<12;i++){
+		for(let i=0;i<16;i++){
 		var v=new virus(getRndInteger(0,window.innerWidth),getRndInteger(0,window.innerHeight-150));
 		v.create_virus();
 		nodes.push(v);
 		}
-		for(let i=0;i<12;i++){
-			var s=new sanitizer(getRndInteger(0,window.innerWidth),getRndInteger(0,window.innerHeight-150));
+		for(let i=0;i<14;i++){
+			var s=new sanitizer(getRndInteger(0,window.innerWidth-100),getRndInteger(0,window.innerHeight-150));
 			s.create_sanitizer();
 			sanitizers.push(s);
 		}
+		circularVirusA=new virus(window.innerWidth/2,150);
+		circularVirusA.create_virus();
+		circularVirusA.radiiX=circularVirusA.x+150;
+		circularVirusA.radiiY=circularVirusA.y;
+		circularVirusA.angle=0;
+		game_canva.context.drawImage(jerryhome,circularVirusA.radiiX,circularVirusA.radiiY,100,100);
 
 }
 
@@ -158,11 +201,8 @@ this.canva.width= window.innerWidth;
  
 	return this;
 }
-var isDragging=false;
-var oldm;
-var oldn;
+
 function handleMouseDown(e){
-//clear_canvas(m,n);
  oldm=m;
  oldn=n;
 if (e.type === "touchstart") {
@@ -211,25 +251,73 @@ function handleMouseOut(e){
 }
 
 
-var game_canva;
-var img;
-window.onload=function() {
-img=new Image();
-img.src='corona1.png';
-sanitizerimg=new Image();
-sanitizerimg.src='hand_sanitizer.png';
-boyimg=new Image();
-boyimg.src='jerry.png';
-boyimg.onload=function(){
-	create_player();
-}
 
-img.onload=function(){
-game_canva=initialiseGameZone();
-//testEnemy();
-window.setInterval(function(){
-moveObject();
-}, 50);
+function startGame(){
+	gameTimer=window.setInterval(function(){
+		moveObject();
+	}, move_interval);
 }
+function restartGame(level){
+	if(level==1){
+		move_interval=50;
+	}else if(level==2){
+		move_interval=30;
+	}
+	isDragging=false;
+    x=50;
+	y=50;
+	nodes=[];
+	sanitizers=[];
+	game_canva.context.beginPath();
+	game_canva.context.rect(0,0,window.innerWidth,window.innerHeight);
+	game_canva.context.fillStyle = "black";
+	game_canva.context.fill();	
+	create_player();
+	startGame();
+}
+function playerAttacked(){
+			clear_canvas(playerx,playery);
+			isDragging=false;
+			window.clearInterval(gameTimer);
+			game_canva.context.drawImage(jerryend,playerx,playery,200,200);
+			setTimeout(function() {
+			$("#gameOverModal").modal('toggle');
+			}, 100);
+}
+function playerWon(){
+	clear_canvas(playerx,playery);
+			isDragging=false;
+			window.clearInterval(gameTimer);
+			setTimeout(function() {
+			$("#gameWonModal").modal('toggle');
+			}, 100);
+}
+function track_sanitizers(){
+	for(let i=0;i<sanitizers.length;i++){
+	if(Math.abs(playerx-sanitizers[i].x)<=50 && Math.abs(playery-sanitizers[i].y)<=50){
+		sanitizers[i].clear_sanitizer();
+		sanitizers.splice(i,1);
+	}else{
+	sanitizers[i].create_sanitizer();
+	}
+}
+}
+window.onload=function() {
+	game_canva=initialiseGameZone();
+	$("#myModal").modal("toggle");
+	img=new Image();
+	img.src='corona12.png';
+	sanitizerimg=new Image();
+	sanitizerimg.src='hand_sanitizer.png';
+	boyimg=new Image();
+	boyimg.src='jerry.png';
+	jerryend=new Image();
+	jerryend.src='jerry2.png';
+	jerryhome=new Image();
+	jerryhome.src='jerryhome.png';
+
+	boyimg.onload=function(){
+		create_player();
+	}
 }
 
