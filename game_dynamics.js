@@ -71,7 +71,7 @@ function moveObject(){
 			playerAttacked();					
 		}else if(sanitizers.length<=1 && Math.abs(playerx-circularVirusA.radiiX)<=50 && Math.abs(playery-circularVirusA.radiiY)<=50){
 			playerWon();
-		}
+		}	
 		else{
 			nodes[i].create_virus();
 		}
@@ -322,7 +322,6 @@ function sound(src) {
 }
 window.onload=function() {
 	game_canva=initialiseGameZone();
-	$("#myModal").modal("toggle");
 	img=new Image();
 	img.src='corona12.png';
 	sanitizerimg=new Image();
@@ -337,7 +336,8 @@ window.onload=function() {
 	winningMusic=new sound("smb_1-up.wav");
 	endMusic=new sound('endmusic.wav');
 
-	boyimg.onload=function(){
+	jerryhome.onload=function(){
+		$("#myModal").modal("toggle");
 		create_player();
 	}
 }
