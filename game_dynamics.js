@@ -276,17 +276,17 @@ function restartGame(level){
 	startGame();
 }
 function playerAttacked(){
-			endMusic.play();
+			if(endMusic) endMusic.play();
 			clear_canvas(playerx,playery);
 			isDragging=false;
 			window.clearInterval(gameTimer);
-			game_canva.context.drawImage(jerryend,playerx,playery,200,200);
+			if(jerryend) game_canva.context.drawImage(jerryend,playerx,playery,200,200);
 			setTimeout(function() {
 			$("#gameOverModal").modal('toggle');
 			}, 100);
 }
 function playerWon(){
-	winningMusic.play();
+	if(winningMusic) winningMusic.play();
 	clear_canvas(playerx,playery);
 			isDragging=false;
 			window.clearInterval(gameTimer);
@@ -321,6 +321,7 @@ function sound(src) {
   }
 }
 window.onload=function() {
+	var promise = new Promise(function(resolve, reject) { 
 	game_canva=initialiseGameZone();
 	img=new Image();
 	img.src='corona12.png';
@@ -335,10 +336,12 @@ window.onload=function() {
 	sanitizeMusic = new sound("smb3_coin.wav");
 	winningMusic=new sound("smb_1-up.wav");
 	endMusic=new sound('endmusic.wav');
-
-	jerryhome.onload=function(){
+	resolve();
+}).then(function(){
 		$("#myModal").modal("toggle");
 		create_player();
-	}
+},function(){
+	window.location.reload();
+}) 
 }
 
