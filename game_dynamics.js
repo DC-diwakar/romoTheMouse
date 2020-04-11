@@ -146,7 +146,7 @@ function testEnemy(){
 	// game_canva.context.fillStyle = "gray";
 	//game_canva.context.arc(x,y,25,0, 2*Math.PI);
 	game_canva.context.drawImage(img,circularVirusA.x,circularVirusA.y,60,60);
-	game_canva.context.drawImage(jerryhome,circularVirusA.radiiX,circularVirusA.radiiY,100,100);
+	if(jerryhome) game_canva.context.drawImage(jerryhome,circularVirusA.radiiX,circularVirusA.radiiY,100,100);
 
 }
 function create_player(){
@@ -299,7 +299,7 @@ function track_sanitizers(){
 	if(Math.abs(playerx-sanitizers[i].x)<=50 && Math.abs(playery-sanitizers[i].y)<=50){
 		sanitizers[i].clear_sanitizer();
 		//sanitizeMusic.stop();
-		sanitizeMusic.play();
+		if(sanitizeMusic) sanitizeMusic.play();
 		sanitizers.splice(i,1);
 	}else{
 	sanitizers[i].create_sanitizer();
@@ -321,7 +321,6 @@ function sound(src) {
   }
 }
 window.onload=function() {
-	var promise = new Promise(function(resolve, reject) { 
 	game_canva=initialiseGameZone();
 	img=new Image();
 	img.src='corona12.png';
@@ -336,12 +335,9 @@ window.onload=function() {
 	sanitizeMusic = new sound("smb3_coin.wav");
 	winningMusic=new sound("smb_1-up.wav");
 	endMusic=new sound('endmusic.wav');
-	resolve();
-}).then(function(){
-		$("#myModal").modal("toggle");
-		create_player();
-},function(){
-	window.location.reload();
-}) 
+	$("#myModal").modal("toggle");
+	boyimg.onload=function(){
+		setTimeout(create_player(),1000);
+	}
 }
 
