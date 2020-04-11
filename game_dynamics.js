@@ -24,6 +24,7 @@ var level=1;
 var sanitizeMusic;
 var winningMusic;
 var endMusic;
+var sanitizer_collected=0;
 function getRndInteger(min, max) {
   return Math.floor(Math.random() * (max - min + 1) ) + min;
 }
@@ -147,6 +148,20 @@ function testEnemy(){
 	//game_canva.context.arc(x,y,25,0, 2*Math.PI);
 	game_canva.context.drawImage(img,circularVirusA.x,circularVirusA.y,60,60);
 	if(jerryhome) game_canva.context.drawImage(jerryhome,circularVirusA.radiiX,circularVirusA.radiiY,100,100);
+	// game_canva.context.beginPath();
+	// game_canva.context.rect((window.innerWidth) - 280,30,250,100);
+	// game_canva.context.fillStyle = "black";
+	// game_canva.context.fill();
+	// game_canva.context.stroke();
+	// game_canva.context.fillStyle = "white";
+	// game_canva.context.font = "bold 25px Arial";
+	// let msg='';
+	// if(sanitizer_collected<13){
+	//  msg="sanitizers collected :"+sanitizer_collected;
+	// }else{
+	//  msg="we have enough sanitizers , enter home asap";
+	// }
+	// game_canva.context.fillText(msg, (window.innerWidth) - 280,30);
 
 }
 function create_player(){
@@ -268,6 +283,7 @@ function restartGame(level){
 	y=50;
 	nodes=[];
 	sanitizers=[];
+	sanitizer_collected=0;
 	game_canva.context.beginPath();
 	game_canva.context.rect(0,0,window.innerWidth,window.innerHeight);
 	game_canva.context.fillStyle = "black";
@@ -301,6 +317,7 @@ function track_sanitizers(){
 		//sanitizeMusic.stop();
 		if(sanitizeMusic) sanitizeMusic.play();
 		sanitizers.splice(i,1);
+		sanitizer_collected++;
 	}else{
 	sanitizers[i].create_sanitizer();
 	}
